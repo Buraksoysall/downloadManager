@@ -1,0 +1,412 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:2:1-36:12
+MERGED from [ffmpeg-kit-full-gpl-6.0-2.LTS.aar] C:\Users\burak\.gradle\caches\8.9\transforms\c0869dc6298a2e989bfda7bb382de891\transformed\jetified-ffmpeg-kit-full-gpl-6.0-2.LTS\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\dc851b7d2490bda3fe5c9a948a58f00b\transformed\jetified-activity-1.9.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\6380099c68dc940557dd3e28b14b2be9\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\f117440eef277ee6a40d3c915648df84\transformed\jetified-material3-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\a215aaa593038ea77a9588982a9f8bca\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\842be17b1a13c099e9d25c791c075066\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\2d5bfdf07cd982c16b154f4f51285b99\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\acad76a3b6393a582f2a89c5e5cb8fe1\transformed\jetified-coil-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\ce946b15e43933e8cac7c6ba922def3d\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.media3:media3-ui:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fd887be36d1237f29c04308531f4f3c8\transformed\jetified-media3-ui-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-transformer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fed9f85fae405ea4564b8f5186cb0d25\transformed\jetified-media3-transformer-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-extractor:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\9041787e2ea7c869b17de6c402d0490d\transformed\jetified-media3-extractor-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-muxer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\40a0b9053365b7a136d92b58aec7f3b3\transformed\jetified-media3-muxer-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-container:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\4440306ba895abfa7f98b53c794ddc12\transformed\jetified-media3-container-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-effect:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\3d85cbd4d72f6197d2e350b68f5c0487\transformed\jetified-media3-effect-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-datasource:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\bf2c120e63236d0841e15bbb7f1d087f\transformed\jetified-media3-datasource-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-decoder:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\5610432fca9968581a228079d3523d70\transformed\jetified-media3-decoder-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-database:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\e019fa26903186198e71f679d40b3f1b\transformed\jetified-media3-database-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-common:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\0d9e375466614ed4917b4a265b0d0ad4\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media3:media3-exoplayer-hls:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\8f68f70865163a2feacc82aa1e7505d1\transformed\jetified-media3-exoplayer-hls-1.3.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media3:media3-exoplayer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\01d3303574f8a4482c402cb2b04d1614\transformed\jetified-media3-exoplayer-1.3.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.7.0] C:\Users\burak\.gradle\caches\8.9\transforms\57d8d2e1307d0ad1ec9bf8478a10d7a6\transformed\media-1.7.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\3b60a6cde96eaf9c8d89b3a915f0553f\transformed\recyclerview-1.3.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a6c6f9bd8bebaa8f35f3f691c92d49bc\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\849156d0a4f2cf293b41b605b473341c\transformed\jetified-core-ktx-1.13.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\5603890a51cda854327fd5fb076f3fc8\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\437f15a922f581e8b8cafaddc863ba82\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\c82270428c7b1acba56f087aa9289b24\transformed\jetified-material-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\707a2ec6e8664c329ab792c66eb95d5d\transformed\jetified-material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a0c31bc088779c00f91cfda7389f11a\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\21d46de5ffc175eddbff2ce70202e744\transformed\jetified-material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d2b867fb7817aa28d88dea60c9f84335\transformed\jetified-foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\675cfc0c5e3b1ebffd83830666cd3a1c\transformed\jetified-animation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a7be39807df2e7b1ae347e16b431ebad\transformed\jetified-foundation-layout-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\953570674f79e50980d30c944bc6bea8\transformed\jetified-animation-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\dd9b1f27b870b9abdc364be4b65b19fc\transformed\jetified-ui-tooling-data-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0cd7612d8986ba23aadef6988be61ad3\transformed\jetified-ui-unit-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\bfcf3a64477d1fcef2ca073ad0564918\transformed\jetified-ui-geometry-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\3bae01ad9cb6d36b766d3647bcd9d08e\transformed\jetified-ui-util-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a3bfb3919839fdfab5ad7c5737101d8f\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41783a4ee938d2820df5ad2718f9536b\transformed\jetified-ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0c9df308b8b59816d72d31ad42f9f699\transformed\jetified-ui-text-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\burak\.gradle\caches\8.9\transforms\2840d9a340162a3e822f4e26d87156f2\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\aacf84de6bd4ce81dd0b6493004af8b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\0521d8b7c2cec0f39acddc55dcd36e53\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\1fc6e9526fe780fd732140809c7c6c58\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\ec693666be132509120c6d127bffdc04\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\06830a3b005baeb19a5feb8abf027bfa\transformed\lifecycle-livedata-core-2.8.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\891cbb103e32c248d0f84b6d33b8e081\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\4378582a193f3fb8c9c8700f3c6ac0ac\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\35dbc6627e255a9ff8bc752fcec41f2a\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\fffe032d0df66f942ae85e5d41f21796\transformed\jetified-lifecycle-viewmodel-ktx-2.8.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\6e52f28e4565052dbed9495d96a7ba52\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\8365888e3e32815ad3480a0f58a0aaeb\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\burak\.gradle\caches\8.9\transforms\5224d090eae296d465850eb8641d6522\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.compose.ui:ui-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d8069699460c94a3d13d4781b39b6f66\transformed\jetified-ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\db8f41fff01ead498faa026039b135f5\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41f2883540c334aeb4c77035e1fbb2f3\transformed\jetified-runtime-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\burak\.gradle\caches\8.9\transforms\a4bcc2078e9535134a34c1ab2ce22bd5\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\058d8a522301df34558b58b0e77fdb38\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\eecb9f33cbdcbc77dbaed5cee53e425c\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\burak\.gradle\caches\8.9\transforms\bf8cced028256e9f458bd440cf15f846\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a19a552f1c77744927606ff838de7237\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\burak\.gradle\caches\8.9\transforms\117bbf812484142a61ac06de983a98c6\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:5:5-67
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:8:5-9:38
+	android:maxSdkVersion
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:9:9-35
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:8:22-78
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:12:5-13:36
+	android:required
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:13:9-33
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:12:22-74
+application
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:15:5-34:19
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:15:5-34:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\eecb9f33cbdcbc77dbaed5cee53e425c\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\eecb9f33cbdcbc77dbaed5cee53e425c\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:18:9-35
+	android:label
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:17:9-41
+	android:allowBackup
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:16:9-35
+activity#com.example.videodownloader.MainActivity
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:20:9-27:20
+	android:exported
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:22:13-36
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:21:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:23:13-26:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:24:17-69
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:24:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:25:17-77
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:25:27-74
+activity#com.example.videodownloader.ui.WarmUpActivity
+ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:29:9-32:79
+	android:exported
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:31:13-37
+	android:theme
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:32:13-76
+	android:name
+		ADDED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml:30:13-46
+uses-sdk
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+MERGED from [ffmpeg-kit-full-gpl-6.0-2.LTS.aar] C:\Users\burak\.gradle\caches\8.9\transforms\c0869dc6298a2e989bfda7bb382de891\transformed\jetified-ffmpeg-kit-full-gpl-6.0-2.LTS\AndroidManifest.xml:5:5-44
+MERGED from [ffmpeg-kit-full-gpl-6.0-2.LTS.aar] C:\Users\burak\.gradle\caches\8.9\transforms\c0869dc6298a2e989bfda7bb382de891\transformed\jetified-ffmpeg-kit-full-gpl-6.0-2.LTS\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\dc851b7d2490bda3fe5c9a948a58f00b\transformed\jetified-activity-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\dc851b7d2490bda3fe5c9a948a58f00b\transformed\jetified-activity-1.9.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\6380099c68dc940557dd3e28b14b2be9\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\6380099c68dc940557dd3e28b14b2be9\transformed\jetified-activity-ktx-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\f117440eef277ee6a40d3c915648df84\transformed\jetified-material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\f117440eef277ee6a40d3c915648df84\transformed\jetified-material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\a215aaa593038ea77a9588982a9f8bca\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.0] C:\Users\burak\.gradle\caches\8.9\transforms\a215aaa593038ea77a9588982a9f8bca\transformed\jetified-activity-compose-1.9.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\842be17b1a13c099e9d25c791c075066\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\842be17b1a13c099e9d25c791c075066\transformed\jetified-coil-compose-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\2d5bfdf07cd982c16b154f4f51285b99\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\2d5bfdf07cd982c16b154f4f51285b99\transformed\jetified-coil-compose-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\acad76a3b6393a582f2a89c5e5cb8fe1\transformed\jetified-coil-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\acad76a3b6393a582f2a89c5e5cb8fe1\transformed\jetified-coil-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\ce946b15e43933e8cac7c6ba922def3d\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.6.0] C:\Users\burak\.gradle\caches\8.9\transforms\ce946b15e43933e8cac7c6ba922def3d\transformed\jetified-coil-base-2.6.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.media3:media3-ui:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fd887be36d1237f29c04308531f4f3c8\transformed\jetified-media3-ui-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-ui:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fd887be36d1237f29c04308531f4f3c8\transformed\jetified-media3-ui-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-transformer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fed9f85fae405ea4564b8f5186cb0d25\transformed\jetified-media3-transformer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-transformer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\fed9f85fae405ea4564b8f5186cb0d25\transformed\jetified-media3-transformer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-extractor:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\9041787e2ea7c869b17de6c402d0490d\transformed\jetified-media3-extractor-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-extractor:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\9041787e2ea7c869b17de6c402d0490d\transformed\jetified-media3-extractor-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-muxer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\40a0b9053365b7a136d92b58aec7f3b3\transformed\jetified-media3-muxer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-muxer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\40a0b9053365b7a136d92b58aec7f3b3\transformed\jetified-media3-muxer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-container:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\4440306ba895abfa7f98b53c794ddc12\transformed\jetified-media3-container-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-container:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\4440306ba895abfa7f98b53c794ddc12\transformed\jetified-media3-container-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-effect:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\3d85cbd4d72f6197d2e350b68f5c0487\transformed\jetified-media3-effect-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-effect:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\3d85cbd4d72f6197d2e350b68f5c0487\transformed\jetified-media3-effect-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\bf2c120e63236d0841e15bbb7f1d087f\transformed\jetified-media3-datasource-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-datasource:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\bf2c120e63236d0841e15bbb7f1d087f\transformed\jetified-media3-datasource-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-decoder:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\5610432fca9968581a228079d3523d70\transformed\jetified-media3-decoder-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-decoder:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\5610432fca9968581a228079d3523d70\transformed\jetified-media3-decoder-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-database:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\e019fa26903186198e71f679d40b3f1b\transformed\jetified-media3-database-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-database:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\e019fa26903186198e71f679d40b3f1b\transformed\jetified-media3-database-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-common:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\0d9e375466614ed4917b4a265b0d0ad4\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-common:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\0d9e375466614ed4917b4a265b0d0ad4\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer-hls:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\8f68f70865163a2feacc82aa1e7505d1\transformed\jetified-media3-exoplayer-hls-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer-hls:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\8f68f70865163a2feacc82aa1e7505d1\transformed\jetified-media3-exoplayer-hls-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\01d3303574f8a4482c402cb2b04d1614\transformed\jetified-media3-exoplayer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-exoplayer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\01d3303574f8a4482c402cb2b04d1614\transformed\jetified-media3-exoplayer-1.3.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.7.0] C:\Users\burak\.gradle\caches\8.9\transforms\57d8d2e1307d0ad1ec9bf8478a10d7a6\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.media:media:1.7.0] C:\Users\burak\.gradle\caches\8.9\transforms\57d8d2e1307d0ad1ec9bf8478a10d7a6\transformed\media-1.7.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\3b60a6cde96eaf9c8d89b3a915f0553f\transformed\recyclerview-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\3b60a6cde96eaf9c8d89b3a915f0553f\transformed\recyclerview-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a6c6f9bd8bebaa8f35f3f691c92d49bc\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a6c6f9bd8bebaa8f35f3f691c92d49bc\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\849156d0a4f2cf293b41b605b473341c\transformed\jetified-core-ktx-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\849156d0a4f2cf293b41b605b473341c\transformed\jetified-core-ktx-1.13.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\5603890a51cda854327fd5fb076f3fc8\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\5603890a51cda854327fd5fb076f3fc8\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\437f15a922f581e8b8cafaddc863ba82\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\437f15a922f581e8b8cafaddc863ba82\transformed\jetified-autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\c82270428c7b1acba56f087aa9289b24\transformed\jetified-material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\c82270428c7b1acba56f087aa9289b24\transformed\jetified-material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\707a2ec6e8664c329ab792c66eb95d5d\transformed\jetified-material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\707a2ec6e8664c329ab792c66eb95d5d\transformed\jetified-material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a0c31bc088779c00f91cfda7389f11a\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a0c31bc088779c00f91cfda7389f11a\transformed\jetified-material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\21d46de5ffc175eddbff2ce70202e744\transformed\jetified-material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\21d46de5ffc175eddbff2ce70202e744\transformed\jetified-material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d2b867fb7817aa28d88dea60c9f84335\transformed\jetified-foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d2b867fb7817aa28d88dea60c9f84335\transformed\jetified-foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\675cfc0c5e3b1ebffd83830666cd3a1c\transformed\jetified-animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\675cfc0c5e3b1ebffd83830666cd3a1c\transformed\jetified-animation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a7be39807df2e7b1ae347e16b431ebad\transformed\jetified-foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a7be39807df2e7b1ae347e16b431ebad\transformed\jetified-foundation-layout-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\953570674f79e50980d30c944bc6bea8\transformed\jetified-animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\953570674f79e50980d30c944bc6bea8\transformed\jetified-animation-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\dd9b1f27b870b9abdc364be4b65b19fc\transformed\jetified-ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\dd9b1f27b870b9abdc364be4b65b19fc\transformed\jetified-ui-tooling-data-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0cd7612d8986ba23aadef6988be61ad3\transformed\jetified-ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0cd7612d8986ba23aadef6988be61ad3\transformed\jetified-ui-unit-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\bfcf3a64477d1fcef2ca073ad0564918\transformed\jetified-ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\bfcf3a64477d1fcef2ca073ad0564918\transformed\jetified-ui-geometry-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\3bae01ad9cb6d36b766d3647bcd9d08e\transformed\jetified-ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\3bae01ad9cb6d36b766d3647bcd9d08e\transformed\jetified-ui-util-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a3bfb3919839fdfab5ad7c5737101d8f\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\a3bfb3919839fdfab5ad7c5737101d8f\transformed\jetified-ui-tooling-preview-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41783a4ee938d2820df5ad2718f9536b\transformed\jetified-ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41783a4ee938d2820df5ad2718f9536b\transformed\jetified-ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0c9df308b8b59816d72d31ad42f9f699\transformed\jetified-ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\0c9df308b8b59816d72d31ad42f9f699\transformed\jetified-ui-text-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\burak\.gradle\caches\8.9\transforms\2840d9a340162a3e822f4e26d87156f2\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\burak\.gradle\caches\8.9\transforms\2840d9a340162a3e822f4e26d87156f2\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\aacf84de6bd4ce81dd0b6493004af8b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\aacf84de6bd4ce81dd0b6493004af8b9\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\0521d8b7c2cec0f39acddc55dcd36e53\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\burak\.gradle\caches\8.9\transforms\0521d8b7c2cec0f39acddc55dcd36e53\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\1fc6e9526fe780fd732140809c7c6c58\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\1fc6e9526fe780fd732140809c7c6c58\transformed\jetified-savedstate-ktx-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\ec693666be132509120c6d127bffdc04\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\burak\.gradle\caches\8.9\transforms\ec693666be132509120c6d127bffdc04\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\06830a3b005baeb19a5feb8abf027bfa\transformed\lifecycle-livedata-core-2.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\06830a3b005baeb19a5feb8abf027bfa\transformed\lifecycle-livedata-core-2.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\891cbb103e32c248d0f84b6d33b8e081\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\891cbb103e32c248d0f84b6d33b8e081\transformed\jetified-lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\4378582a193f3fb8c9c8700f3c6ac0ac\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\4378582a193f3fb8c9c8700f3c6ac0ac\transformed\jetified-lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\35dbc6627e255a9ff8bc752fcec41f2a\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\35dbc6627e255a9ff8bc752fcec41f2a\transformed\jetified-lifecycle-viewmodel-savedstate-2.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\fffe032d0df66f942ae85e5d41f21796\transformed\jetified-lifecycle-viewmodel-ktx-2.8.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\fffe032d0df66f942ae85e5d41f21796\transformed\jetified-lifecycle-viewmodel-ktx-2.8.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\6e52f28e4565052dbed9495d96a7ba52\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\6e52f28e4565052dbed9495d96a7ba52\transformed\jetified-lifecycle-runtime-ktx-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\8365888e3e32815ad3480a0f58a0aaeb\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\8365888e3e32815ad3480a0f58a0aaeb\transformed\jetified-lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\burak\.gradle\caches\8.9\transforms\5224d090eae296d465850eb8641d6522\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\burak\.gradle\caches\8.9\transforms\5224d090eae296d465850eb8641d6522\transformed\jetified-accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.compose.ui:ui-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d8069699460c94a3d13d4781b39b6f66\transformed\jetified-ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\d8069699460c94a3d13d4781b39b6f66\transformed\jetified-ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\db8f41fff01ead498faa026039b135f5\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\db8f41fff01ead498faa026039b135f5\transformed\jetified-runtime-saveable-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41f2883540c334aeb4c77035e1fbb2f3\transformed\jetified-runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\41f2883540c334aeb4c77035e1fbb2f3\transformed\jetified-runtime-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\burak\.gradle\caches\8.9\transforms\a4bcc2078e9535134a34c1ab2ce22bd5\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] C:\Users\burak\.gradle\caches\8.9\transforms\a4bcc2078e9535134a34c1ab2ce22bd5\transformed\jetified-annotation-experimental-1.4.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\058d8a522301df34558b58b0e77fdb38\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\058d8a522301df34558b58b0e77fdb38\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\eecb9f33cbdcbc77dbaed5cee53e425c\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\eecb9f33cbdcbc77dbaed5cee53e425c\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\burak\.gradle\caches\8.9\transforms\bf8cced028256e9f458bd440cf15f846\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\burak\.gradle\caches\8.9\transforms\bf8cced028256e9f458bd440cf15f846\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a19a552f1c77744927606ff838de7237\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\burak\.gradle\caches\8.9\transforms\a19a552f1c77744927606ff838de7237\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\burak\.gradle\caches\8.9\transforms\117bbf812484142a61ac06de983a98c6\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\burak\.gradle\caches\8.9\transforms\117bbf812484142a61ac06de983a98c6\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\burak\downloadManager\src\main\AndroidManifest.xml
+activity#androidx.compose.ui.tooling.PreviewActivity
+ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\9a741c626c0f8884661fc3802fa44640\transformed\jetified-ui-tooling-release\AndroidManifest.xml:24:13-71
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [androidx.media3:media3-common:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\0d9e375466614ed4917b4a265b0d0ad4\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\01d3303574f8a4482c402cb2b04d1614\transformed\jetified-media3-exoplayer-1.3.1\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\01d3303574f8a4482c402cb2b04d1614\transformed\jetified-media3-exoplayer-1.3.1\AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from [androidx.media3:media3-common:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\0d9e375466614ed4917b4a265b0d0ad4\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:22-76
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\burak\.gradle\caches\8.9\transforms\8e0fb484b9603cdd9c2a33fb66b11669\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] C:\Users\burak\.gradle\caches\8.9\transforms\b0cc08334053a96f8642b21174607fe4\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:23:9-81
+permission#com.example.videodownloader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:26:22-94
+uses-permission#com.example.videodownloader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.0] C:\Users\burak\.gradle\caches\8.9\transforms\279d3184394244f708f9aef1e57edcf2\transformed\core-1.13.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.0] C:\Users\burak\.gradle\caches\8.9\transforms\d8fb9feb4edd8fa827edd1cdd2d9cf64\transformed\jetified-lifecycle-process-2.8.0\AndroidManifest.xml:30:17-78
+activity#androidx.activity.ComponentActivity
+ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.6.6] C:\Users\burak\.gradle\caches\8.9\transforms\fb43a34e4c58dd306b666da51c9752c2\transformed\jetified-ui-test-manifest-1.6.6\AndroidManifest.xml:24:13-63
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\burak\.gradle\caches\8.9\transforms\a9f18e60356c423f2f192f895546b915\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
