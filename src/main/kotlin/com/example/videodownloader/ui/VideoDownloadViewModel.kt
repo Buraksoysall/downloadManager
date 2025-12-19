@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.videodownloader.model.VideoItem
+import com.example.videodownloader.model.SubtitleItem
 import kotlinx.coroutines.Dispatchers
 import com.example.videodownloader.ffmpeg.HlsTrackManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +26,10 @@ import okhttp3.Request
 import org.jsoup.Jsoup
 import java.net.URLDecoder
 import android.util.Log
-// import com.arthenica.ffmpegkit.FFmpegKit
-// import com.arthenica.ffmpegkit.SessionState
+import com.example.videodownloader.util.DebugLog
+import com.example.videodownloader.util.BlocklistManager
+import com.example.videodownloader.notification.DownloadNotificationManager
+// FFmpegKit imports removed for Play Store compliance (GPL license conflict)
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FileInputStream
@@ -51,6 +54,7 @@ class VideoDownloadViewModel(
 
     private val appContext: Context = application.applicationContext
     private val defaultUserAgent = "Mozilla/5.0 (Android) VideoDownloader/1.0"
+    private val notificationManager = DownloadNotificationManager(appContext)
     @Volatile private var currentReferer: String? = null
     @Volatile private var currentCookies: String? = null
 
@@ -67,6 +71,26 @@ class VideoDownloadViewModel(
 
     fun setCurrentCookies(cookies: String?) {
         currentCookies = cookies
+    }
+    
+    fun testNotification() {
+        // Test bildirimi göster
+        notificationManager.showProgressNotification(
+            notificationId = 999,
+            title = "Test İndirme",
+            progress = 50,
+            isIndeterminate = false
+        )
+        
+        // 3 saniye sonra tamamlandı bildirimi göster
+        viewModelScope.launch {
+            kotlinx.coroutines.delay(3000)
+            notificationManager.showCompletedNotification(
+                notificationId = 999,
+                title = "Test İndirme",
+                message = "Test başarılı!"
+            )
+        }
     }
 
     fun onUrlChange(newUrl: String) {
@@ -135,7 +159,7 @@ class VideoDownloadViewModel(
                             val (u, label) = pair
                             VideoItem(
                                 id = (subBase + sidx + 1).toString(),
-                                title = "SUB ${label}",
+                                title = "Altyazı",
                                 thumbnailUrl = "",
                                 downloadUrl = u,
                                 sizeBytes = null
@@ -207,45 +231,21 @@ class VideoDownloadViewModel(
         val req = chain.request()
         val start = System.nanoTime()
         try {
-            Log.d(tag, "--> ${'$'}{req.method} ${'$'}{req.url}")
+            DebugLog.d(tag, "--> ${'$'}{req.method} ${'$'}{req.url}")
             req.headers.names().forEach { name ->
-                req.headers.values(name).forEach { value -> Log.v(tag, "${'$'}name: ${'$'}value") }
+                req.headers.values(name).forEach { value -> DebugLog.v(tag, "${'$'}name: ${'$'}value") }
             }
         } catch (_: Throwable) {}
         val resp = chain.proceed(req)
         val tookMs = (System.nanoTime() - start) / 1_000_000
         try {
             val peek = kotlin.runCatching { resp.peekBody(64 * 1024).string() }.getOrNull()
-            Log.d(tag, "<-- ${'$'}{resp.code} ${'$'}{resp.message} (${tookMs}ms) ${'$'}{req.url}")
-            if (!peek.isNullOrEmpty()) Log.v(tag, "body: ${peek.take(2000)}")
+            DebugLog.d(tag, "<-- ${'$'}{resp.code} ${'$'}{resp.message} (${tookMs}ms) ${'$'}{req.url}")
+            if (!peek.isNullOrEmpty()) DebugLog.v(tag, "body: ${peek.take(2000)}")
         } catch (_: Throwable) {}
         resp
     }
 
-    // Test amaçlı: güvensiz SSL istemcisi (self-signed/eksik CA). Prod'da KULLANMAYIN.
-    private fun unsafeClient(): OkHttpClient {
-        return try {
-            val trustAllCerts = arrayOf<javax.net.ssl.TrustManager>(object : javax.net.ssl.X509TrustManager {
-                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
-                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-            })
-            val sslContext = javax.net.ssl.SSLContext.getInstance("SSL")
-            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
-            val sslSocketFactory = sslContext.socketFactory
-            OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as javax.net.ssl.X509TrustManager)
-                .hostnameVerifier { _, _ -> true }
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .addInterceptor(loggingInterceptor("AppHTTP(UNSAFE)"))
-                .build()
-        } catch (e: Exception) {
-            httpClient
-        }
-    }
 
     private fun originOf(url: String?): String? {
         if (url.isNullOrBlank()) return null
@@ -577,18 +577,9 @@ class VideoDownloadViewModel(
         currentCookies?.let { builder.header("Cookie", it) }
         originOf(currentReferer)?.let { builder.header("Origin", it) }
         val req = builder.build()
-        return try {
-            httpClient.newCall(req).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code}")
-                resp.body?.string() ?: ""
-            }
-        } catch (e: javax.net.ssl.SSLHandshakeException) {
-            Log.w("HLS", "SSLHandshakeException on $url, retrying UNSAFE (test only)")
-            val u = unsafeClient()
-            u.newCall(req).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} (unsafe)")
-                resp.body?.string() ?: ""
-            }
+        return httpClient.newCall(req).execute().use { resp ->
+            if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code}")
+            resp.body?.string() ?: ""
         }
     }
 
@@ -598,6 +589,7 @@ class VideoDownloadViewModel(
 
     fun downloadVideo(videoItem: VideoItem) {
         val url = videoItem.downloadUrl
+        val notificationId = videoItem.hashCode()
         viewModelScope.launch {
             // Non-downloadable embedded captions
             if (url.startsWith("cc://") || videoItem.title.startsWith("CC ")) {
@@ -651,18 +643,29 @@ class VideoDownloadViewModel(
 
             if (hlsLikely) {
                 // HLS için özel indirme hattı
+                notificationManager.showProgressNotification(notificationId, videoItem.title, 0, isIndeterminate = true)
                 Toast.makeText(appContext, "HLS indiriliyor...", Toast.LENGTH_SHORT).show()
                 val ok = withContext(Dispatchers.IO) {
                     try {
-                        if (videoItem.title.startsWith("SUB") || videoItem.title.startsWith("AUDIO SUB")) {
+                        if (videoItem.title.startsWith("SUB") || videoItem.title.startsWith("AUDIO SUB") || videoItem.title.startsWith("Altyazı")) {
                             Log.i("HLS", "Subtitle clicked (HLS): url=$url")
-                            startSubtitleDownload(url, sanitizeFileName(videoItem.title))
+                            startSubtitleDownload(url, sanitizeFileName(videoItem.title), true, notificationId)
                         } else {
-                            startHlsDownload(url, sanitizeFileName(videoItem.title))
+                            // Eğer audio veya subtitle track'leri varsa, hepsini indir ve birleştir
+                            if (videoItem.hlsAudioTracks.isNotEmpty() || videoItem.hlsSubtitleTracks.isNotEmpty()) {
+                                startHlsDownloadWithTracks(videoItem, sanitizeFileName(videoItem.title), notificationId)
+                            } else {
+                                startHlsDownload(url, sanitizeFileName(videoItem.title), true, notificationId)
+                            }
                         }
-                    } catch (e: Exception) { Log.w("HLS", "HLS download failed", e); false }
+                    } catch (e: Exception) { 
+                        Log.w("HLS", "HLS download failed", e)
+                        notificationManager.showErrorNotification(notificationId, videoItem.title, "HLS indirme başarısız: ${e.message}")
+                        false 
+                    }
                 }
                 if (ok) {
+                    notificationManager.showCompletedNotification(notificationId, videoItem.title, "HLS indirme tamamlandı")
                     Toast.makeText(appContext, "HLS indirme tamamlandı", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(appContext, "HLS indirme başarısız", Toast.LENGTH_LONG).show()
@@ -674,6 +677,9 @@ class VideoDownloadViewModel(
             val uri = try { Uri.parse(url) } catch (e: Exception) {
                 Toast.makeText(appContext, "İndirme linki geçersiz", Toast.LENGTH_SHORT).show(); return@launch
             }
+
+            // İlk bildirim göster
+            notificationManager.showProgressNotification(notificationId, videoItem.title, 0, isIndeterminate = true)
 
             val request = DownloadManager.Request(uri).apply {
                 setTitle(videoItem.title)
@@ -689,13 +695,81 @@ class VideoDownloadViewModel(
             }
 
             val downloadManager = appContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            downloadManager.enqueue(request)
+            val downloadId = downloadManager.enqueue(request)
+            
+            // İndirme ilerlemesini takip et
+            monitorDownloadProgress(downloadId, notificationId, videoItem.title)
 
             Toast.makeText(appContext, "İndirme başlatıldı: ${videoItem.title}", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun sanitizeFileName(name: String): String = name.replace(Regex("[\\\\/:*?\"<>|]"), "_")
+
+    /**
+     * İndirme ilerlemesini takip et ve bildirim güncelle
+     */
+    private fun monitorDownloadProgress(downloadId: Long, notificationId: Int, title: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val downloadManager = appContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            var isDownloading = true
+            
+            while (isDownloading) {
+                val query = DownloadManager.Query().setFilterById(downloadId)
+                val cursor = downloadManager.query(query)
+                
+                if (cursor.moveToFirst()) {
+                    val statusIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+                    val bytesDownloadedIndex = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)
+                    val bytesTotalIndex = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
+                    
+                    val status = cursor.getInt(statusIndex)
+                    val bytesDownloaded = cursor.getLong(bytesDownloadedIndex)
+                    val bytesTotal = cursor.getLong(bytesTotalIndex)
+                    
+                    when (status) {
+                        DownloadManager.STATUS_RUNNING -> {
+                            if (bytesTotal > 0) {
+                                val progress = ((bytesDownloaded * 100) / bytesTotal).toInt()
+                                notificationManager.showProgressNotification(notificationId, title, progress)
+                            } else {
+                                notificationManager.showProgressNotification(notificationId, title, 0, isIndeterminate = true)
+                            }
+                        }
+                        DownloadManager.STATUS_SUCCESSFUL -> {
+                            notificationManager.showCompletedNotification(notificationId, title, "İndirme tamamlandı")
+                            isDownloading = false
+                        }
+                        DownloadManager.STATUS_FAILED -> {
+                            val reasonIndex = cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
+                            val reason = cursor.getInt(reasonIndex)
+                            val errorMsg = when (reason) {
+                                DownloadManager.ERROR_CANNOT_RESUME -> "İndirme devam ettirilemedi"
+                                DownloadManager.ERROR_DEVICE_NOT_FOUND -> "Depolama alanı bulunamadı"
+                                DownloadManager.ERROR_FILE_ALREADY_EXISTS -> "Dosya zaten mevcut"
+                                DownloadManager.ERROR_FILE_ERROR -> "Dosya hatası"
+                                DownloadManager.ERROR_HTTP_DATA_ERROR -> "HTTP veri hatası"
+                                DownloadManager.ERROR_INSUFFICIENT_SPACE -> "Yetersiz depolama alanı"
+                                DownloadManager.ERROR_TOO_MANY_REDIRECTS -> "Çok fazla yönlendirme"
+                                DownloadManager.ERROR_UNHANDLED_HTTP_CODE -> "Bilinmeyen HTTP hatası"
+                                else -> "İndirme başarısız"
+                            }
+                            notificationManager.showErrorNotification(notificationId, title, errorMsg)
+                            isDownloading = false
+                        }
+                        DownloadManager.STATUS_PAUSED -> {
+                            notificationManager.showProgressNotification(notificationId, title, 0, isIndeterminate = true)
+                        }
+                    }
+                }
+                cursor.close()
+                
+                if (isDownloading) {
+                    kotlinx.coroutines.delay(1000) // 1 saniye bekle
+                }
+            }
+        }
+    }
 
     /**
      * Subtitle dosyasını indir (VTT, SRT, ASS, SSA)
@@ -796,24 +870,26 @@ class VideoDownloadViewModel(
     }
 
     // HLS (.m3u8) indirme hattı: segmentleri indir ve TS olarak birleştir
-    private fun startHlsDownload(hlsUrl: String, baseName: String): Boolean {
-        Log.i("HLS", "Start download: $hlsUrl")
-        // Altyazı otomatik tespit/çıkarma akışını paralel başlat (mevcut video/ses hattını bozmaz)
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val headers = HlsTrackManager.Headers(
-                    userAgent = defaultUserAgent,
-                    referer = currentReferer,
-                    cookie = currentCookies
-                )
-                val path = HlsTrackManager.findAndFetchSubtitle(appContext, hlsUrl, headers)
-                if (path != null) {
-                    Log.i("HlsSubtitle", "🎉 Altyazı bulundu ve kaydedildi: $path")
-                } else {
-                    Log.w("HlsSubtitle", "❌ Altyazı tespit edilemedi")
+    private fun startHlsDownload(hlsUrl: String, baseName: String, exportPublic: Boolean = true, notificationId: Int? = null): Boolean {
+        DebugLog.i("HLS", "Start download: $hlsUrl")
+        if (exportPublic) {
+            // Altyazı otomatik tespit/çıkarma akışını paralel başlat (mevcut video/ses hattını bozmaz)
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val headers = HlsTrackManager.Headers(
+                        userAgent = defaultUserAgent,
+                        referer = currentReferer,
+                        cookie = currentCookies
+                    )
+                    val path = HlsTrackManager.findAndFetchSubtitle(appContext, hlsUrl, headers)
+                    if (path != null) {
+                        Log.i("HlsSubtitle", "🎉 Altyazı bulundu ve kaydedildi: $path")
+                    } else {
+                        Log.w("HlsSubtitle", "❌ Altyazı tespit edilemedi")
+                    }
+                } catch (e: Exception) {
+                    Log.w("HlsSubtitle", "Subtitle auto flow failed: ${e.message}", e)
                 }
-            } catch (e: Exception) {
-                Log.w("HlsSubtitle", "Subtitle auto flow failed: ${e.message}", e)
             }
         }
         // 1) Master/Media playlist çöz
@@ -852,6 +928,13 @@ class VideoDownloadViewModel(
             segmentUris.forEachIndexed { idx, segUrl ->
                 val part = File(tempDir, String.format("part_%05d.ts", idx))
                 Log.d("HLS", "Segment indiriliyor: ${idx + 1}/${segmentUris.size}")
+                
+                // Progress notification güncelle
+                notificationId?.let { id ->
+                    val progress = ((idx + 1) * 100) / segmentUris.size
+                    notificationManager.showProgressNotification(id, baseName, progress)
+                }
+                
                 if (keyInfo != null && keyInfo.method == "AES-128") {
                     downloadAndMaybeDecrypt(segUrl, part, keyInfo, idx)
                 } else {
@@ -868,10 +951,12 @@ class VideoDownloadViewModel(
         val outTs = File(outDir, "$baseName.ts")
         mergeSegments(segmentFiles, outTs)
         Log.i("HLS", "Birleştirme tamam: ${outTs.absolutePath}")
-        try {
-            val exported = exportToPublicDownloads(outTs, "$baseName.ts")
-            if (exported != null) Log.i("HLS", "Genel Downloads'a kopyalandı: $exported")
-        } catch (_: Exception) { }
+        if (exportPublic) {
+            try {
+                val exported = exportToPublicDownloads(outTs, "$baseName.ts")
+                if (exported != null) Log.i("HLS", "Genel Downloads'a kopyalandı: $exported")
+            } catch (_: Exception) { }
+        }
 
         // 4.b) TS -> MP4 remux (temporarily disabled - FFmpegKit not available)
         // val outMp4 = File(outDir, "$baseName.mp4")
@@ -1079,16 +1164,26 @@ class VideoDownloadViewModel(
         }
     }
 
-    private enum class UrlKind { MP4, M3U8, VTT, SRT, ASS, SSA, UNKNOWN }
+    private enum class UrlKind { MP4, M3U8, VTT, SRT, ASS, SSA, SUB, SBV, TTML, DFXP, SMI, SAMI, UNKNOWN }
 
     private fun detectUrlKind(url: String): UrlKind {
         val l = url.lowercase()
+        // Video formatları
         if (l.contains(".m3u8")) return UrlKind.M3U8
+        if (l.contains(".mp4")) return UrlKind.MP4
+        
+        // Altyazı formatları (genişletilmiş)
         if (l.contains(".vtt")) return UrlKind.VTT
         if (l.contains(".srt")) return UrlKind.SRT
         if (l.contains(".ass")) return UrlKind.ASS
         if (l.contains(".ssa")) return UrlKind.SSA
-        if (l.contains(".mp4")) return UrlKind.MP4
+        if (l.contains(".sub")) return UrlKind.SUB
+        if (l.contains(".sbv")) return UrlKind.SBV
+        if (l.contains(".ttml")) return UrlKind.TTML
+        if (l.contains(".dfxp")) return UrlKind.DFXP
+        if (l.contains(".smi")) return UrlKind.SMI
+        if (l.contains(".sami")) return UrlKind.SAMI
+        
         return try {
             val b = Request.Builder().url(url).head()
                 .header("User-Agent", defaultUserAgent)
@@ -1100,21 +1195,55 @@ class VideoDownloadViewModel(
                 val ct = r.header("Content-Type")?.lowercase()
                 when {
                     ct == null -> UrlKind.UNKNOWN
+                    // Video formatları
                     ct.contains("mpegurl") || ct.contains("application/x-mpegurl") -> UrlKind.M3U8
+                    ct.startsWith("video/") || ct.contains("mp4") -> UrlKind.MP4
+                    // Altyazı formatları
                     ct.contains("text/vtt") || ct.contains("application/vtt") -> UrlKind.VTT
                     ct.contains("text/srt") || ct.contains("application/x-subrip") -> UrlKind.SRT
                     ct.contains("/x-ssa") || ct.contains("text/ssa") -> UrlKind.SSA
                     ct.contains("/x-ass") || ct.contains("text/ass") -> UrlKind.ASS
-                    ct.startsWith("video/") || ct.contains("mp4") -> UrlKind.MP4
+                    ct.contains("/x-sub") || ct.contains("text/sub") -> UrlKind.SUB
+                    ct.contains("text/sbv") -> UrlKind.SBV
+                    ct.contains("ttml") || ct.contains("application/ttml+xml") -> UrlKind.TTML
+                    ct.contains("dfxp") -> UrlKind.DFXP
+                    ct.contains("smi") || ct.contains("sami") -> UrlKind.SMI
                     else -> UrlKind.UNKNOWN
                 }
             }
         } catch (_: Exception) { UrlKind.UNKNOWN }
     }
 
+    // Blocklist for DRM/license and major streaming platforms (Play policy safety)
+    private val blockedHosts = listOf(
+        "youtube.com", "youtu.be", "googlevideo.com",
+        "netflix.com", "nflxvideo.net",
+        "amazon.com", "primevideo.com", "media-amazon.com",
+        "disneyplus.com", "hulu.com", "hbomax.com",
+        "paramountplus.com", "tv.apple.com", "apple.com"
+    )
+    private val blockedKeywords = listOf(
+        "widevine", "drm", "license", "clearkey", "playready", "fairplay"
+    )
+    private fun isBlockedUrl(url: String): Boolean {
+        return try {
+            val host = java.net.URI(url).host?.lowercase()
+            val hBlocked = host != null && blockedHosts.any { host.contains(it) }
+            val kBlocked = blockedKeywords.any { url.lowercase().contains(it) }
+            hBlocked || kBlocked
+        } catch (_: Exception) { false }
+    }
+
     // Tarayıcı yakalayıcısından gelen medya URL'lerini işler
     fun onMediaFound(url: String) {
         val lowered = url.lowercase()
+        // Skip DRM/license and blocked platforms
+        if (BlocklistManager.isBlocked(url)) {
+            val reason = BlocklistManager.getBlockReason(url) ?: "Engellenmiş platform"
+            Log.d("MediaFound", "Blocked source ignored: $url - $reason")
+            Toast.makeText(appContext, "⚠️ $reason", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (isLikelyAdUrl(lowered)) return
 
         // Aynı URL listede varsa ekleme
@@ -1135,13 +1264,21 @@ class VideoDownloadViewModel(
                             sizeBytes = size
                         ))
                     }
-                    UrlKind.VTT, UrlKind.SRT, UrlKind.ASS, UrlKind.SSA -> {
-                        // Subtitle dosyası
+                    UrlKind.VTT, UrlKind.SRT, UrlKind.ASS, UrlKind.SSA, 
+                    UrlKind.SUB, UrlKind.SBV, UrlKind.TTML, UrlKind.DFXP, 
+                    UrlKind.SMI, UrlKind.SAMI -> {
+                        // Subtitle dosyası (LEGAL yöntemle yakalandı)
                         val format = when (detectUrlKind(url)) {
                             UrlKind.VTT -> "vtt"
                             UrlKind.SRT -> "srt"
                             UrlKind.ASS -> "ass"
                             UrlKind.SSA -> "ssa"
+                            UrlKind.SUB -> "sub"
+                            UrlKind.SBV -> "sbv"
+                            UrlKind.TTML -> "ttml"
+                            UrlKind.DFXP -> "dfxp"
+                            UrlKind.SMI -> "smi"
+                            UrlKind.SAMI -> "sami"
                             else -> "subtitle"
                         }
                         val title = "SUB $format ${url.substringAfterLast('/').take(30)}"
@@ -1174,22 +1311,54 @@ class VideoDownloadViewModel(
                                 Log.d("HLS", "Found ${variants.size} variants")
                                 variants.forEach { v -> Log.d("HLS", "Variant: ${v.bandwidth}bps -> ${v.url}") }
                                 
+                                // Audio renditions: EXT-X-MEDIA TYPE=AUDIO
+                                val audios: List<AudioRendition> = parseAudioRenditions(master, url)
+                                Log.d("HLS", "Found ${audios.size} audio renditions")
+                                
+                                // Subtitle renditions: EXT-X-MEDIA TYPE=SUBTITLES
+                                val subs: List<SubtitleRendition> = parseSubtitleRenditions(master, url)
+                                Log.d("HLS", "Found ${subs.size} subtitle renditions")
+                                if (subs.isEmpty()) {
+                                    val mediaLines = master.lines().filter { it.contains("EXT-X-MEDIA", ignoreCase = true) }
+                                    Log.d("HLS", "EXT-X-MEDIA lines: ${mediaLines.size}")
+                                }
+                                
+                                // Audio track bilgilerini hazırla
+                                val audioTrackInfos = audios.map { a ->
+                                    com.example.videodownloader.model.AudioTrackInfo(
+                                        url = a.url,
+                                        name = a.name,
+                                        language = null
+                                    )
+                                }
+                                
+                                // Subtitle track bilgilerini hazırla
+                                val subtitleTrackInfos = subs.map { s ->
+                                    com.example.videodownloader.model.SubtitleTrackInfo(
+                                        url = s.url,
+                                        name = s.name,
+                                        language = s.lang
+                                    )
+                                }
+                                
+                                // Video item'larını oluştur (tüm track bilgileriyle)
                                 val videoItems = if (variants.isNotEmpty()) {
                                     variants.mapIndexed { idx, variant ->
                                         val size = estimateHlsSize(variant.url)
                                         VideoItem(
                                             id = (_uiState.value.videos.size + idx + 1).toString(),
-                                            title = "HLS ${formatBandwidth(variant.bandwidth)}",
+                                            title = "Video${idx + 1}",
                                             thumbnailUrl = "",
                                             downloadUrl = variant.url,
-                                            sizeBytes = size
+                                            sizeBytes = size,
+                                            hlsMasterUrl = url,
+                                            hlsAudioTracks = audioTrackInfos,
+                                            hlsSubtitleTracks = subtitleTrackInfos
                                         )
                                     }
                                 } else emptyList()
-
-                                // Audio renditions: EXT-X-MEDIA TYPE=AUDIO
-                                val audios: List<AudioRendition> = parseAudioRenditions(master, url)
-                                Log.d("HLS", "Found ${audios.size} audio renditions")
+                                
+                                // Audio item'larını ayrı göster (isteğe bağlı)
                                 val audioItems: List<VideoItem> = audios.mapIndexed { aidx: Int, a: AudioRendition ->
                                     val asize = estimateHlsSize(a.url)
                                     VideoItem(
@@ -1200,18 +1369,12 @@ class VideoDownloadViewModel(
                                         sizeBytes = asize
                                     )
                                 }
-
-                                // Subtitle renditions: EXT-X-MEDIA TYPE=SUBTITLES
-                                val subs: List<SubtitleRendition> = parseSubtitleRenditions(master, url)
-                                Log.d("HLS", "Found ${subs.size} subtitle renditions")
-                                if (subs.isEmpty()) {
-                                    val mediaLines = master.lines().filter { it.contains("EXT-X-MEDIA", ignoreCase = true) }
-                                    Log.d("HLS", "EXT-X-MEDIA lines: ${mediaLines.size}")
-                                }
+                                
+                                // Subtitle item'larını ayrı göster (isteğe bağlı)
                                 val subItems: List<VideoItem> = subs.mapIndexed { sidx: Int, s: SubtitleRendition ->
                                     VideoItem(
                                         id = (_uiState.value.videos.size + videoItems.size + audioItems.size + sidx + 1).toString(),
-                                        title = "SUB ${s.name ?: s.lang ?: "subtitle"}",
+                                        title = "Altyazı",
                                         thumbnailUrl = "",
                                         downloadUrl = s.url,
                                         sizeBytes = null
@@ -1350,7 +1513,7 @@ class VideoDownloadViewModel(
     }
 
     // HLS/VTT altyazı indirme: media playlist ise segmentleri sırayla indirip metin olarak birleştir, plain .vtt ise direkt indir
-    private fun startSubtitleDownload(subUrl: String, baseName: String): Boolean {
+    private fun startSubtitleDownload(subUrl: String, baseName: String, exportPublic: Boolean = true, notificationId: Int? = null): Boolean {
         return try {
             val text = fetchText(subUrl)
             val isPlaylist = text.lines().any { it.trimStart().startsWith("#EXTM3U", ignoreCase = true) }
@@ -1371,6 +1534,13 @@ class VideoDownloadViewModel(
                     FileOutputStream(outVtt, false).use { fos ->
                         segs.forEachIndexed { idx, sUrl ->
                             Log.d("HLS", "Subtitle segment downloading: ${idx + 1}/${segs.size}")
+                            
+                            // Progress notification güncelle
+                            notificationId?.let { id ->
+                                val progress = ((idx + 1) * 100) / segs.size
+                                notificationManager.showProgressNotification(id, baseName, progress)
+                            }
+                            
                             val part = fetchText(sUrl)
                             // Fazla başlıkları temizle (WEBVTT/BOM). İlk segmentte başlığı koru.
                             val normalized = if (idx == 0) part else part.replaceFirst("\uFEFF", "").replaceFirst(Regex("^\\s*WEBVTT\\s*\n"), "")
@@ -1382,9 +1552,10 @@ class VideoDownloadViewModel(
                     currentReferer = prevRef
                 }
             }
-            // Public Downloads'a kopyala
-            val exported = exportToPublicDownloads(outVtt, "$baseName.vtt", "text/vtt")
-            if (exported != null) Log.i("HLS", "Subtitle exported to public: $exported")
+            if (exportPublic) {
+                val exported = exportToPublicDownloads(outVtt, "$baseName.vtt", "text/vtt")
+                if (exported != null) Log.i("HLS", "Subtitle exported to public: $exported")
+            }
             true
         } catch (e: Exception) {
             Log.w("HLS", "Subtitle download failed", e)
@@ -1405,5 +1576,212 @@ class VideoDownloadViewModel(
             "adserver"
         )
         return blockedHints.any { lowerUrl.contains(it) }
+    }
+
+    // UI'daki genel listeden (ayrı item olarak) uygun altyazıyı bul
+    private fun findGlobalSubtitleCandidate(videoUrl: String): SubtitleItem? {
+        return try {
+            val videoHost = Uri.parse(videoUrl).host?.lowercase()
+            val candidates = _uiState.value.videos.filter { it.title.contains("Altyazı", true) || it.title.contains("sub vtt", true) }
+            val mapped = candidates.map { vi ->
+                val u = vi.downloadUrl
+                val host = try { Uri.parse(u).host?.lowercase() } catch (_: Throwable) { null }
+                val scoreHost = if (videoHost != null && host == videoHost) 10 else 0
+                val scoreTranslate = if (vi.title.contains("translate", true)) 5 else 0
+                val scoreExt = if (u.contains(".vtt", true)) 2 else 0
+                Triple(vi, u, scoreHost + scoreTranslate + scoreExt)
+            }
+            val best = mapped.maxByOrNull { it.third } ?: return null
+            SubtitleItem(url = best.second, label = best.first.title, format = "vtt")
+        } catch (_: Throwable) { null }
+    }
+
+    // Sequential track download - her track'i sırayla indir, sonra birleştir
+    private suspend fun downloadTracksSequentially(
+        videoItem: VideoItem,
+        baseName: String,
+        headers: HlsTrackManager.Headers,
+        root: File,
+        notificationId: Int? = null
+    ): Boolean = withContext(Dispatchers.IO) {
+        Log.i("HLS_QUEUE", "🚀 Starting sequential track download queue")
+        Log.i("HLS_QUEUE", "📋 Queue: Video + ${videoItem.hlsAudioTracks.size} audio + ${videoItem.hlsSubtitleTracks.size} subtitle tracks")
+
+        val downloadedFiles = mutableListOf<Pair<String, String>>() // (type, path)
+
+        try {
+            // 1️⃣ Altyazıyı önce indir (doğrudan log)
+            Log.i("HLS_QUEUE", "� [1/3] Downloading subtitle FIRST...")
+            var subtitleDownloaded = false
+            // 1.a HLS içi altyazı
+            if (videoItem.hlsSubtitleTracks.isNotEmpty()) {
+                Log.i("HLS_QUEUE", "📝 Subtitle source: HLS subtitle track")
+                val preferredTrack = videoItem.hlsSubtitleTracks
+                    .firstOrNull { (it.name ?: "").contains("translate", true) || (it.language ?: "").contains("tr", true) }
+                    ?: videoItem.hlsSubtitleTracks.first()
+                val subOk = startSubtitleDownload(preferredTrack.url, "${baseName}_subtitle", exportPublic = false, notificationId)
+                if (subOk) {
+                    val sFile = File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${baseName}_subtitle.vtt")
+                    if (sFile.exists()) {
+                        downloadedFiles.add("subtitle" to sFile.absolutePath)
+                        Log.i("HLS_QUEUE", "✅ Subtitle downloaded (HLS): ${sFile.length()} bytes -> ${sFile.absolutePath}")
+                        subtitleDownloaded = true
+                    }
+                }
+            }
+            // 1.b VideoItem.subtitles listesinden
+            if (!subtitleDownloaded && videoItem.subtitles.isNotEmpty()) {
+                val preferred = videoItem.subtitles.firstOrNull { it.label.contains("translate", true) } ?: videoItem.subtitles.first()
+                Log.i("HLS_QUEUE", "📝 Subtitle source: Item subtitles -> ${preferred.label}")
+                val subOk = startSubtitleDownload(preferred.url, "${baseName}_subtitle_ext", exportPublic = false, notificationId)
+                if (subOk) {
+                    val sFile = File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${baseName}_subtitle_ext.vtt")
+                    if (sFile.exists()) {
+                        downloadedFiles.add("subtitle" to sFile.absolutePath)
+                        Log.i("HLS_QUEUE", "✅ Subtitle downloaded (External list): ${sFile.length()} bytes -> ${sFile.absolutePath}")
+                        subtitleDownloaded = true
+                    }
+                }
+            }
+            // 1.c UI genel listeden uygun altyazı
+            if (!subtitleDownloaded) {
+                val candidate = findGlobalSubtitleCandidate(videoItem.downloadUrl)
+                if (candidate != null) {
+                    Log.i("HLS_QUEUE", "📝 Subtitle source: Global list -> ${candidate.label}")
+                    val ok = startSubtitleDownload(candidate.url, "${baseName}_subtitle_ext2", exportPublic = false, notificationId)
+                    if (ok) {
+                        val sFile = File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${baseName}_subtitle_ext2.vtt")
+                        if (sFile.exists()) {
+                            downloadedFiles.add("subtitle" to sFile.absolutePath)
+                            Log.i("HLS_QUEUE", "✅ Subtitle downloaded (Global): ${sFile.length()} bytes -> ${sFile.absolutePath}")
+                            subtitleDownloaded = true
+                        }
+                    }
+                }
+            }
+
+            // 2️⃣ Video track (ikinci)
+            Log.i("HLS_QUEUE", "� [2/3] Downloading video track...")
+            val videoOk = startHlsDownload(videoItem.downloadUrl, "${baseName}_video", exportPublic = false)
+            if (!videoOk) {
+                Log.e("HLS_QUEUE", "❌ Video download failed")
+                return@withContext false
+            }
+            val videoFile = File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${baseName}_video.ts")
+            if (!videoFile.exists()) {
+                Log.e("HLS_QUEUE", "❌ Video file not found after download")
+                return@withContext false
+            }
+            downloadedFiles.add("video" to videoFile.absolutePath)
+            Log.i("HLS_QUEUE", "✅ Video downloaded: ${videoFile.length()} bytes -> ${videoFile.absolutePath}")
+
+            // 3️⃣ Audio tracks (üçüncü) - ilkini indir
+            if (videoItem.hlsAudioTracks.isNotEmpty()) {
+                Log.i("HLS_QUEUE", "🎵 [3/3] Downloading audio tracks...")
+                for ((index, audioTrack) in videoItem.hlsAudioTracks.withIndex()) {
+                    DebugLog.i("HLS_QUEUE", "🎵 Audio ${index + 1}/${videoItem.hlsAudioTracks.size}: ${audioTrack.url}")
+                    val audioOk = startHlsDownload(audioTrack.url, "${baseName}_audio_${index}", exportPublic = false)
+                    if (audioOk) {
+                        val aFile = File(appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${baseName}_audio_${index}.ts")
+                        if (aFile.exists()) {
+                            downloadedFiles.add("audio" to aFile.absolutePath)
+                            Log.i("HLS_QUEUE", "✅ Audio ${index + 1} downloaded: ${aFile.length()} bytes -> ${aFile.absolutePath}")
+                            break
+                        }
+                    }
+                }
+            }
+
+            // (Altyazı daha önce indirildi; tekrar denemeye gerek yok)
+
+            // 4️⃣ Merge işlemi (indirilenlere göre)
+            Log.i("HLS_QUEUE", "🔧 [4/4] Merging ${downloadedFiles.size} downloaded files...")
+            val vPath = downloadedFiles.find { it.first == "video" }?.second
+            val aPath = downloadedFiles.find { it.first == "audio" }?.second
+            val sPath = downloadedFiles.find { it.first == "subtitle" }?.second
+
+            if (vPath != null && aPath != null) {
+                try {
+                    val outputPath = File(root, "${baseName}.mp4").absolutePath
+                    val mergedPath = HlsTrackManager.mergeMedia(
+                        context = appContext,
+                        videoPath = vPath,
+                        audioPath = aPath,
+                        subtitlePath = sPath,
+                        outputPath = outputPath,
+                        headers = headers
+                    )
+                    // Merge functionality disabled - FFmpeg removed for Play Store compliance
+                    // exportToPublicDownloads(File(mergedPath), "$baseName.mp4", "video/mp4")
+                    Log.i("HLS_QUEUE", "✅ Sequential download and merge completed successfully!")
+
+                    // Temp dosyaları temizle
+                    downloadedFiles.forEach { (_, path) ->
+                        File(path).delete()
+                        Log.d("HLS_QUEUE", "🗑️ Cleaned temp file: $path")
+                    }
+                    return@withContext true
+                } catch (e: Exception) {
+                    Log.e("HLS_QUEUE", "❌ Merge failed: ${e.message}")
+                    return@withContext false
+                }
+            } else if (vPath != null) {
+                Log.i("HLS_QUEUE", "✅ Video-only download completed")
+                return@withContext true
+            } else {
+                Log.e("HLS_QUEUE", "❌ No video file to process")
+                return@withContext false
+            }
+        } catch (e: Exception) {
+            Log.e("HLS_QUEUE", "❌ Sequential download failed: ${e.message}", e)
+            return@withContext false
+        }
+    }
+
+    // Video + tüm audio ve subtitle track'lerini indirip FFmpeg ile birleştir
+    private suspend fun startHlsDownloadWithTracks(videoItem: VideoItem, baseName: String, notificationId: Int? = null): Boolean = withContext(Dispatchers.IO) {
+        Log.i("HLS_MULTI", "🚀 Starting HLS download with all tracks for: ${videoItem.title}")
+        DebugLog.i("HLS_MULTI", "🎯 Video URL: ${videoItem.downloadUrl}")
+        Log.i("HLS_MULTI", "🎵 Audio tracks: ${videoItem.hlsAudioTracks.size}")
+        Log.i("HLS_MULTI", "📝 Subtitle tracks: ${videoItem.hlsSubtitleTracks.size}")
+        
+        try {
+            val headers = HlsTrackManager.Headers(
+                userAgent = defaultUserAgent,
+                referer = currentReferer,
+                cookie = currentCookies
+            )
+            
+            val root = appContext.getExternalFilesDir(null) ?: appContext.filesDir
+            
+            // Önce playlist'i kontrol et - eğer segmentler .jpg/.png gibi görüntü formatlarıysa uyar
+            try {
+                val playlistContent = fetchText(videoItem.downloadUrl)
+                val hasImageSegments = playlistContent.lines().any { line ->
+                    val trimmed = line.trim()
+                    !trimmed.startsWith("#") && (
+                        trimmed.endsWith(".jpg", true) || 
+                        trimmed.endsWith(".jpeg", true) || 
+                        trimmed.endsWith(".png", true) ||
+                        trimmed.endsWith(".gif", true)
+                    )
+                }
+                if (hasImageSegments) {
+                    Log.w("HLS_MULTI", "⚠️ Detected image-based HLS stream - trying special handling")
+                    
+                    // Görüntü tabanlı HLS için queue sistemi: Her track'i ayrı indir, sonra birleştir
+                    return@withContext downloadTracksSequentially(videoItem, baseName, headers, root, notificationId)
+                }
+            } catch (e: Exception) {
+                Log.w("HLS_MULTI", "Could not pre-check playlist: ${e.message}")
+            }
+            
+            // Normal HLS akışları için de sequential download kullan
+            Log.i("HLS_MULTI", "🔄 Using sequential download for normal HLS stream")
+            return@withContext downloadTracksSequentially(videoItem, baseName, headers, root, notificationId)
+        } catch (e: Exception) {
+            Log.e("HLS", "Failed to download/merge tracks: ${e.message}", e)
+            return@withContext false
+        }
     }
 }

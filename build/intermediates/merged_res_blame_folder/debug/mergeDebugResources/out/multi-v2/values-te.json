@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.videodownloader-mergeDebugResources-51:/values-te/values-te.xml",
+            "outputFile": "com.example.videodownloader-mergeDebugResources-50:/values-te/values-te.xml",
             "map": [
                 {
                     "source": "C:\\Users\\burak\\.gradle\\caches\\8.9\\transforms\\d2b867fb7817aa28d88dea60c9f84335\\transformed\\jetified-foundation-release\\res\\values-te\\values-te.xml",

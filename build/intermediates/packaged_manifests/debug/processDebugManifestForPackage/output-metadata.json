@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.example.videodownloader",
+  "applicationId": "com.buraksoysall.videodownloader",
   "variantName": "debug",
   "elements": [
     {

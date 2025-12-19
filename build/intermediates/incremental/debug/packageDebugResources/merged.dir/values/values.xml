@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="accent_green">#FF4CAF50</color>
+    <color name="black">#FF000000</color>
+    <color name="error_red">#FFF44336</color>
+    <color name="ic_launcher_background">#3DDC84</color>
+    <color name="primary_blue">#FF1976D2</color>
+    <color name="primary_blue_dark">#FF0D47A1</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="warning_orange">#FFFF9800</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="about">Hakkında</string>
+    <string name="app_description">Güvenli video indirme uygulaması</string>
+    <string name="app_name">Video Downloader</string>
+    <string name="copyright_notice">Telif Hakları</string>
+    <string name="dmca_policy">DMCA Politikası</string>
+    <string name="download_completed">İndirme tamamlandı</string>
+    <string name="download_failed">İndirme başarısız</string>
+    <string name="downloading">İndiriliyor...</string>
+    <string name="enter_video_link">Video linki girin</string>
+    <string name="notification_channel_description">Video indirme ilerlemesi bildirimleri</string>
+    <string name="notification_channel_name">İndirme İlerlemesi</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="search_and_open">Ara ve Aç</string>
+    <string name="settings">Ayarlar</string>
+    <string name="terms_of_service">Kullanım Koşulları</string>
+    <string name="test_notification">Test Bildirim</string>
+    <style name="Theme.VideoDownloader" parent="android:Theme.Material.Light">
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">@color/primary_blue_dark</item>
+        
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+</resources>

@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.example.videodownloader-debug-52:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.videodownloader-main-54:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.videodownloader-debug-52:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.videodownloader-main-54:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.videodownloader-debug-52:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.videodownloader-main-54:/mipmap-anydpi-v26/ic_launcher.xml"
+    }
+]

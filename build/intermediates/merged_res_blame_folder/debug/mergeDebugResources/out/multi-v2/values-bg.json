@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.videodownloader-mergeDebugResources-51:/values-bg/values-bg.xml",
+            "outputFile": "com.example.videodownloader-mergeDebugResources-50:/values-bg/values-bg.xml",
             "map": [
                 {
                     "source": "C:\\Users\\burak\\.gradle\\caches\\8.9\\transforms\\279d3184394244f708f9aef1e57edcf2\\transformed\\core-1.13.0\\res\\values-bg\\values-bg.xml",

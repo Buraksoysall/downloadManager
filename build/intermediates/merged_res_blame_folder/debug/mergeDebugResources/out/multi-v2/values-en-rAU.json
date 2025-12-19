@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.videodownloader-mergeDebugResources-51:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.example.videodownloader-mergeDebugResources-50:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
                     "source": "C:\\Users\\burak\\.gradle\\caches\\8.9\\transforms\\fd887be36d1237f29c04308531f4f3c8\\transformed\\jetified-media3-ui-1.3.1\\res\\values-en-rAU\\values-en-rAU.xml",

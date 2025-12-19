@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,36 +31,84 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.CookieManager
 import android.view.ViewGroup
+import android.content.pm.ApplicationInfo
+import com.example.videodownloader.util.PreferencesManager
+import com.example.videodownloader.util.BlocklistManager
+import kotlin.system.exitProcess
+import android.widget.Toast
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VideoDownloadScreen(
     viewModel: VideoDownloadViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val prefsManager = remember { PreferencesManager(context) }
     val uiState by viewModel.uiState.collectAsState()
     var showBrowser by remember { mutableStateOf(false) }
     var showCapturedDialog by remember { mutableStateOf(false) }
     var lastCount by remember { mutableStateOf(0) }
+    var showTermsDialog by remember { mutableStateOf(!prefsManager.isTermsAccepted()) }
+    var showSettings by remember { mutableStateOf(false) }
+    
+    // Terms dialog
+    if (showTermsDialog) {
+        TermsDialog(
+            onAccept = {
+                prefsManager.setTermsAccepted(true)
+                showTermsDialog = false
+            },
+            onDecline = {
+                // Uygulamayı kapat
+                exitProcess(0)
+            }
+        )
+        return // Terms kabul edilene kadar ana ekranı gösterme
+    }
+    
+    // Settings screen
+    if (showSettings) {
+        SettingsScreen(
+            onBack = { showSettings = false }
+        )
+        return
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Başlık
-        Text(
-            text = "Video İndirici",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+        // Başlık ve ayarlar butonu
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Video İndirici",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+            IconButton(
+                onClick = { showSettings = true }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Ayarlar",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
 
         // Arama çubuğu
         OutlinedTextField(
             value = uiState.urlText,
             onValueChange = viewModel::onUrlChange,
             label = { Text("Video linki girin") },
-            placeholder = { Text("https://youtube.com/watch?v=...") },
+            placeholder = { Text("https://example.com/video...") },
             leadingIcon = {
                 Icon(Icons.Filled.Search, contentDescription = "Arama")
             },
@@ -67,18 +116,36 @@ fun VideoDownloadScreen(
             singleLine = true
         )
 
-        // Tek buton: Ara ve Tarayıcıyı Aç
+        // Butonlar: Ara ve Aç + Test Bildirimi
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
         ) {
+            // Test bildirimi butonu (debug için)
+            Button(
+                onClick = {
+                    viewModel.testNotification()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text("Test Bildirim")
+            }
+            
             Button(
                 onClick = {
                     if (uiState.urlText.isNotBlank()) {
-                        viewModel.setCurrentPageUrl(uiState.urlText)
-                        showBrowser = true
+                        // URL'yi açmadan önce blocklist kontrolü
+                        if (BlocklistManager.isBlocked(uiState.urlText)) {
+                            val reason = BlocklistManager.getBlockReason(uiState.urlText) ?: "Engellenmiş platform"
+                            Toast.makeText(context, "⚠️ $reason", Toast.LENGTH_LONG).show()
+                        } else {
+                            viewModel.setCurrentPageUrl(uiState.urlText)
+                            showBrowser = true
+                        }
                     }
                 },
                 enabled = !uiState.isLoading && uiState.urlText.isNotBlank()
@@ -180,14 +247,26 @@ fun MiniBrowserDialog(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
+                        // WebView ayarlarını gerçek tarayıcıya benzet (bot/VPN koruması bypass)
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
+                        settings.databaseEnabled = true
                         settings.mediaPlaybackRequiresUserGesture = false
+                        settings.loadWithOverviewMode = true
+                        settings.useWideViewPort = true
+                        settings.setSupportZoom(true)
+                        settings.builtInZoomControls = true
+                        settings.displayZoomControls = false
+                        settings.cacheMode = WebSettings.LOAD_DEFAULT
+                        settings.allowFileAccess = false
+                        settings.allowContentAccess = true
+                        
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
                         }
-                        // UA: bazı sunucular mobil UA ister
-                        settings.userAgentString = "Mozilla/5.0 (Android) VideoDownloader/1.0"
+                        
+                        // Gerçek Chrome/Android tarayıcı User-Agent (Cloudflare/bot koruması bypass)
+                        settings.userAgentString = "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
 
                         // Cookies (gerekli oturum/cf korumaları için)
                         val cookieMgr = CookieManager.getInstance()
@@ -196,41 +275,33 @@ fun MiniBrowserDialog(
                             cookieMgr.setAcceptThirdPartyCookies(this, true)
                         }
 
-                        // Enable remote debugging and console logging
-                        WebView.setWebContentsDebuggingEnabled(true)
+                        // Enable remote debugging and console logging (debug builds only)
+                        val isDebug = (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+                        WebView.setWebContentsDebuggingEnabled(isDebug)
 
-                        // JS bridge to receive URLs from injected script
-                        addJavascriptInterface(object {
-                            @android.webkit.JavascriptInterface
-                            fun mediaFound(u: String) {
-                                post { 
-                                    android.util.Log.d("AndroidBridge", "Captured: $u")
-                                    onMediaFound(u) 
-                                }
-                            }
-                            
-                            @android.webkit.JavascriptInterface
-                            fun subtitlesFound(jsonStr: String) {
-                                post {
-                                    android.util.Log.d("AndroidBridge", "Subtitles: $jsonStr")
-                                    // JSON parse edip subtitle URL'lerini ekle
-                                    try {
-                                        val json = org.json.JSONObject(jsonStr)
-                                        val subsArray = json.optJSONArray("subs")
-                                        if (subsArray != null) {
-                                            for (i in 0 until subsArray.length()) {
-                                                val subUrl = subsArray.optString(i)
-                                                if (subUrl.isNotBlank() && !subUrl.startsWith("#")) {
-                                                    onMediaFound(subUrl)
-                                                }
-                                            }
-                                        }
-                                    } catch (e: Exception) {
-                                        android.util.Log.e("AndroidBridge", "Subtitle parse error", e)
-                                    }
-                                }
-                            }
-                        }, "AndroidBridge")
+                        // Blocklist for DRM/license and major streaming platforms (Play policy safety)
+                        val blockedHosts = listOf(
+                            "youtube.com", "youtu.be", "googlevideo.com",
+                            "netflix.com", "nflxvideo.net",
+                            "amazon.com", "primevideo.com", "media-amazon.com",
+                            "disneyplus.com", "hulu.com", "hbomax.com",
+                            "paramountplus.com", "tv.apple.com", "apple.com"
+                        )
+                        val blockedKeywords = listOf(
+                            "widevine", "drm", "license", "clearkey", "playready", "fairplay"
+                        )
+                        fun isBlocked(url: String): Boolean {
+                            return try {
+                                val uri = android.net.Uri.parse(url)
+                                val host = uri.host?.lowercase()
+                                val hBlocked = host != null && blockedHosts.any { host.contains(it) }
+                                val kBlocked = blockedKeywords.any { url.lowercase().contains(it) }
+                                hBlocked || kBlocked
+                            } catch (_: Exception) { false }
+                        }
+
+                        // Legal yöntem: sadece shouldInterceptRequest kullan
+                        // JavaScript injection KULLANMIYORUZ - legal değil ve gereksiz
 
                         webViewClient = object : WebViewClient() {
                             override fun shouldOverrideUrlLoading(
@@ -238,9 +309,18 @@ fun MiniBrowserDialog(
                                 request: WebResourceRequest?
                             ): Boolean {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    request?.url?.toString()?.let {
-                                        onPageUrlChange(it)
-                                        val ck = CookieManager.getInstance().getCookie(it)
+                                    request?.url?.toString()?.let { url ->
+                                        // Engellenmiş domainleri kontrol et - sayfa açılmasın
+                                        if (BlocklistManager.isBlocked(url)) {
+                                            val reason = BlocklistManager.getBlockReason(url) ?: "Engellenmiş platform"
+                                            view?.post {
+                                                Toast.makeText(view.context, "⚠️ $reason", Toast.LENGTH_LONG).show()
+                                            }
+                                            return true // URL yüklenmesini engelle
+                                        }
+                                        
+                                        onPageUrlChange(url)
+                                        val ck = CookieManager.getInstance().getCookie(url)
                                         view?.post { onCookiesChange(ck) }
                                     }
                                 }
@@ -249,9 +329,19 @@ fun MiniBrowserDialog(
 
                             override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
                                 super.onPageStarted(view, url, favicon)
-                                url?.let {
-                                    onPageUrlChange(it)
-                                    val ck = CookieManager.getInstance().getCookie(it)
+                                url?.let { pageUrl ->
+                                    // Sayfa yüklenmeye başlarken de kontrol et
+                                    if (BlocklistManager.isBlocked(pageUrl)) {
+                                        view?.stopLoading()
+                                        val reason = BlocklistManager.getBlockReason(pageUrl) ?: "Engellenmiş platform"
+                                        view?.post {
+                                            Toast.makeText(view.context, "⚠️ $reason", Toast.LENGTH_LONG).show()
+                                        }
+                                        return
+                                    }
+                                    
+                                    onPageUrlChange(pageUrl)
+                                    val ck = CookieManager.getInstance().getCookie(pageUrl)
                                     view?.post { onCookiesChange(ck) }
                                 }
                             }
@@ -264,11 +354,26 @@ fun MiniBrowserDialog(
                                     request?.url?.toString()
                                 } else null
                                 if (url != null) {
+                                    // Skip DRM/license and blocked platforms
+                                    if (isBlocked(url)) {
+                                        android.util.Log.d("InterceptRequest", "Blocked URL: $url")
+                                        return super.shouldInterceptRequest(view, request)
+                                    }
                                     val lower = url.lowercase()
-                                    // Video ve subtitle URL'lerini yakala
-                                    if (lower.contains(".mp4") || lower.contains(".m3u8") ||
-                                        lower.contains(".vtt") || lower.contains(".srt") ||
-                                        lower.contains(".ass") || lower.contains(".ssa")) {
+                                    // LEGAL YÖNTEM: WebView API ile medya dosyalarını intercept et
+                                    // Video formatları
+                                    val isVideo = lower.contains(".mp4") || lower.contains(".m3u8") || 
+                                                  lower.contains(".webm") || lower.contains(".mkv") ||
+                                                  lower.contains(".ts") || lower.contains(".mpd")
+                                    
+                                    // Altyazı formatları (genişletilmiş)
+                                    val isSubtitle = lower.contains(".vtt") || lower.contains(".srt") ||
+                                                     lower.contains(".ass") || lower.contains(".ssa") ||
+                                                     lower.contains(".sub") || lower.contains(".sbv") ||
+                                                     lower.contains(".ttml") || lower.contains(".dfxp") ||
+                                                     lower.contains(".smi") || lower.contains(".sami")
+                                    
+                                    if (isVideo || isSubtitle) {
                                         
                                         android.util.Log.d("InterceptRequest", "Captured URL: $url")
                                         
@@ -291,153 +396,9 @@ fun MiniBrowserDialog(
 
                             override fun onPageFinished(view: WebView?, url: String?) {
                                 super.onPageFinished(view, url)
-                                val inject = """
-                                    (function(){
-                                      try {
-                                        if (window.__hijacked) return; window.__hijacked = true;
-                                        function report(u){ 
-                                          try { 
-                                            if(u && (u.toLowerCase().includes('.m3u8') || u.toLowerCase().includes('.mp4') || 
-                                                     u.toLowerCase().includes('.vtt') || u.toLowerCase().includes('.srt') ||
-                                                     u.toLowerCase().includes('.ass') || u.toLowerCase().includes('.ssa'))) { 
-                                              console.log('[XHR Hijack] Reporting: ' + u);
-                                              AndroidBridge.mediaFound(u); 
-                                            } 
-                                          } catch(e){
-                                            console.error('[XHR Hijack] Error reporting: ' + e.message);
-                                          }
-                                        }
-                                        var origFetch = window.fetch; if (origFetch) {
-                                          window.fetch = function(){ try { var a = arguments; var u = a && a[0]; if (typeof u === 'string') report(u); else if (u && u.url) report(u.url); } catch(e){} return origFetch.apply(this, arguments); };
-                                        }
-                                        var OrigXHR = window.XMLHttpRequest; if (OrigXHR) {
-                                          var open = OrigXHR.prototype.open; OrigXHR.prototype.open = function(method, url){ try { report(url); } catch(e){} return open.apply(this, arguments); };
-                                        }
-                                        // hls.js hook if available
-                                        if (window.Hls && window.hls instanceof window.Hls) {
-                                          try { window.hls.on(window.Hls.Events.MANIFEST_LOADED, function(ev, data){ try { if (data && data.networkDetails && data.networkDetails.responseURL) report(data.networkDetails.responseURL); } catch(e){} }); } catch(e){}
-                                        }
-                                        console.log('[XHR Hijack] Initialized successfully');
-                                      } catch(e) {
-                                        console.error('[XHR Hijack] Initialization error: ' + e.message);
-                                      }
-                                    })();
-                                """.trimIndent()
-                                view?.evaluateJavascript(inject, null)
-                                
-                                // Playerjs subtitle extraction - interval ile tekrar dene
-                                var attemptCount = 0
-                                val maxAttempts = 3 // Sadece 3 deneme (shouldInterceptRequest ve XHR hijacking ana yöntemler)
-                                val checkInterval = 3000L // 3 saniye
-                                
-                                fun tryExtractSubtitles() {
-                                    attemptCount++
-                                    val playerjsExtract = """
-                                        (function(){
-                                          try {
-                                            console.log('[Subtitle Extractor] Attempt ' + $attemptCount + ' - Checking for Playerjs...');
-                                            
-                                            // Debug: Window'da neler var?
-                                            var windowKeys = Object.keys(window).filter(function(k) {
-                                              return k.toLowerCase().includes('player') || k.toLowerCase().includes('sub') || k === 'o';
-                                            });
-                                            console.log('[Subtitle Extractor] Window keys related to player/sub: ' + windowKeys.join(', '));
-                                            
-                                            // Method 1: Global Playerjs object
-                                            if (window.Playerjs) {
-                                              console.log('[Subtitle Extractor] Found window.Playerjs');
-                                              console.log('[Subtitle Extractor] Playerjs type: ' + typeof window.Playerjs);
-                                              
-                                              var instances = window.Playerjs.instances || [];
-                                              console.log('[Subtitle Extractor] Instances count: ' + instances.length);
-                                              
-                                              for (var i = 0; i < instances.length; i++) {
-                                                var player = instances[i];
-                                                console.log('[Subtitle Extractor] Instance ' + i + ' exists: ' + !!player);
-                                                if (player && player.o) {
-                                                  console.log('[Subtitle Extractor] player.o exists');
-                                                  console.log('[Subtitle Extractor] player.o.subs exists: ' + !!player.o.subs);
-                                                  console.log('[Subtitle Extractor] player.o.subs type: ' + typeof player.o.subs);
-                                                  
-                                                  if (player.o.subs && Array.isArray(player.o.subs)) {
-                                                    var result = {
-                                                      subs: player.o.subs,
-                                                      files_subtitle: player.o.files_subtitle || []
-                                                    };
-                                                    console.log('[Subtitle Extractor] ✅ Subs found: ' + player.o.subs.length);
-                                                    console.log('[Subtitle Extractor] Subs content: ' + JSON.stringify(player.o.subs));
-                                                    AndroidBridge.subtitlesFound(JSON.stringify(result));
-                                                    return 'FOUND:' + player.o.subs.length;
-                                                  }
-                                                }
-                                              }
-                                            }
-                                            
-                                            // Method 2: Direct window check
-                                            if (window.o) {
-                                              console.log('[Subtitle Extractor] Found window.o');
-                                              console.log('[Subtitle Extractor] window.o.subs exists: ' + !!window.o.subs);
-                                              
-                                              if (window.o.subs) {
-                                                console.log('[Subtitle Extractor] window.o.subs type: ' + typeof window.o.subs);
-                                                console.log('[Subtitle Extractor] window.o.subs isArray: ' + Array.isArray(window.o.subs));
-                                                
-                                                var result = {
-                                                  subs: window.o.subs,
-                                                  files_subtitle: window.o.files_subtitle || []
-                                                };
-                                                console.log('[Subtitle Extractor] ✅ Subs found in window.o: ' + (Array.isArray(window.o.subs) ? window.o.subs.length : 'not array'));
-                                                console.log('[Subtitle Extractor] Subs content: ' + JSON.stringify(window.o.subs));
-                                                AndroidBridge.subtitlesFound(JSON.stringify(result));
-                                                return 'FOUND:' + window.o.subs.length;
-                                              }
-                                            }
-                                            
-                                            // Method 3: Search in iframes
-                                            var frames = document.getElementsByTagName('iframe');
-                                            console.log('[Subtitle Extractor] Checking ' + frames.length + ' iframes...');
-                                            for (var f = 0; f < frames.length; f++) {
-                                              try {
-                                                var frameWin = frames[f].contentWindow;
-                                                if (frameWin && frameWin.o && frameWin.o.subs) {
-                                                  console.log('[Subtitle Extractor] ✅ Found in iframe #' + f);
-                                                  var result = {
-                                                    subs: frameWin.o.subs,
-                                                    files_subtitle: frameWin.o.files_subtitle || []
-                                                  };
-                                                  AndroidBridge.subtitlesFound(JSON.stringify(result));
-                                                  return 'FOUND_IFRAME:' + frameWin.o.subs.length;
-                                                }
-                                              } catch (e) { 
-                                                console.log('[Subtitle Extractor] Iframe #' + f + ' cross-origin error');
-                                              }
-                                            }
-                                            
-                                            console.log('[Subtitle Extractor] ❌ No subtitles found (attempt ' + $attemptCount + ')');
-                                            return 'NOT_FOUND';
-                                          } catch(e) {
-                                            console.error('[Subtitle Extractor] Error: ' + e.message);
-                                            return 'ERROR:' + e.message;
-                                          }
-                                        })();
-                                    """.trimIndent()
-
-                                    if (view != null) {
-                                        view?.evaluateJavascript(playerjsExtract) { result ->
-                                            android.util.Log.d("PlayerjsExtract", "Attempt $attemptCount result: $result")
-                                            
-                                            // Eğer bulunamadıysa ve henüz max'e ulaşmadıysak tekrar dene
-                                            if (result?.contains("NOT_FOUND") == true && attemptCount < maxAttempts) {
-                                                view?.postDelayed({ tryExtractSubtitles() }, checkInterval)
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                // İlk deneme 5 saniye sonra başlasın (video yüklensin diye)
-                                // NOT: shouldInterceptRequest ve XHR hijacking zaten subtitle'ları yakalıyor
-                                // Bu sadece ekstra kontrol için
-                                view?.postDelayed({ tryExtractSubtitles() }, 5000)
+                                // Legal yöntem: shouldInterceptRequest zaten tüm medya dosyalarını yakalıyor
+                                // JavaScript injection kullanmıyoruz
+                                android.util.Log.d("WebView", "Page loaded: $url")
                             }
                         }
 
@@ -452,10 +413,17 @@ fun MiniBrowserDialog(
                             }
                         })
 
+                        // Gerçek tarayıcı header'ları (Cloudflare/bot koruması bypass)
                         val extraHeaders = mapOf(
-                            "User-Agent" to "Mozilla/5.0 (Android) VideoDownloader/1.0",
-                            "Accept-Language" to "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4",
-                            "Upgrade-Insecure-Requests" to "1"
+                            "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                            "Accept-Language" to "tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7",
+                            "Accept-Encoding" to "gzip, deflate, br",
+                            "Upgrade-Insecure-Requests" to "1",
+                            "Sec-Fetch-Dest" to "document",
+                            "Sec-Fetch-Mode" to "navigate",
+                            "Sec-Fetch-Site" to "none",
+                            "Sec-Fetch-User" to "?1",
+                            "Cache-Control" to "max-age=0"
                         )
                         loadUrl(startUrl, extraHeaders)
                         onPageUrlChange(startUrl)

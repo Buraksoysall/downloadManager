@@ -27,8 +27,9 @@ package com.example.videodownloader.ffmpeg
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.arthenica.ffmpegkit.FFmpegKit
-import com.arthenica.ffmpegkit.ReturnCode
+// FFmpegKit imports removed for Play Store compliance (GPL license conflict)
+// import com.arthenica.ffmpegkit.FFmpegKit
+// import com.arthenica.ffmpegkit.ReturnCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -105,30 +106,6 @@ object HlsTrackManager {
             .build()
     }
 
-    // Sadece test amaçlı: güvensiz SSL istemcisi (self-signed / eksik CA için). Prod'da kullanmayın.
-    private fun unsafeClient(): OkHttpClient {
-        return try {
-            val trustAllCerts = arrayOf<javax.net.ssl.TrustManager>(object : javax.net.ssl.X509TrustManager {
-                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
-                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-            })
-            val sslContext = javax.net.ssl.SSLContext.getInstance("SSL")
-            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
-            val sslSocketFactory = sslContext.socketFactory
-            OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as javax.net.ssl.X509TrustManager)
-                .hostnameVerifier { _, _ -> true }
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .addInterceptor(loggingInterceptor("HlsHTTP(UNSAFE)"))
-                .build()
-        } catch (e: Exception) {
-            http
-        }
-    }
 
     private fun headersString(headers: Headers?): String {
         if (headers == null) return ""
@@ -254,22 +231,23 @@ object HlsTrackManager {
             android.util.Log.d(TAG, "FFmpegCheck: segment ${idx + 1}/${segUrls.size} -> $segUrl")
             val tmp = File.createTempFile("seg_", ".ts", context.cacheDir).apply { deleteOnExit() }
             downloadBinary(segUrl, tmp, headers)
-            val cmd = "-hide_banner -i \"${tmp.absolutePath}\" -f null -"
-            val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
-            val logs = ss.allLogsAsString
-            anyLogs = logs
-            val match = Regex("""Stream #\d+:\d+.*: Subtitle""").findAll(logs).toList()
-            val hasSub = match.isNotEmpty() ||
-                    logs.contains("eia_608", true) ||
-                    logs.contains("EIA-608", true) ||
-                    logs.contains("Closed Captions", true)
-            val count = match.size
-            android.util.Log.i(TAG, "FFmpegAnalyze(seg ${idx + 1}): hasSubtitle=$hasSub, subCount=$count")
-            if (hasSub) {
-                android.util.Log.i(TAG, "🎉 Altyazı bulundu (segment içinde)")
-                android.util.Log.d(TAG, "FFmpeg raw:\n${logs.take(4000)}")
-                return@withContext EmbeddedSubtitleProbe(true, count, logs)
-            }
+            val cmd = "-hide_banner -protocol_whitelist file,crypto,tcp,https,tls,subfile,pipe,tee,concat -i \"${tmp.absolutePath}\" -f null -"
+            // FFmpegKit removed for Play Store compliance - subtitle detection disabled
+            // val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
+            // val logs = ss.allLogsAsString
+            // anyLogs = logs
+            // val match = Regex("""Stream #\d+:\d+.*: Subtitle""").findAll(logs).toList()
+            // val hasSub = match.isNotEmpty() ||
+            //         logs.contains("eia_608", true) ||
+            //         logs.contains("EIA-608", true) ||
+            //         logs.contains("Closed Captions", true)
+            // val count = match.size
+            android.util.Log.i(TAG, "FFmpegAnalyze(seg ${idx + 1}): Subtitle detection disabled (FFmpeg removed)")
+            // if (hasSub) {
+            //     android.util.Log.i(TAG, "🎉 Altyazı bulundu (segment içinde)")
+            //     android.util.Log.d(TAG, "FFmpeg raw:\n${logs.take(4000)}")
+            //     return@withContext EmbeddedSubtitleProbe(true, count, logs)
+            // }
         }
         android.util.Log.w(TAG, "❌ Altyazı tespit edilemedi (segment içinde)")
         android.util.Log.d(TAG, "FFmpeg raw(last):\n${anyLogs.take(4000)}")
@@ -282,6 +260,7 @@ object HlsTrackManager {
         val headerBlock = headersString(headers)
         val cmd = listOf(
             "-y",
+            "-protocol_whitelist file,crypto,tcp,https,tls,subfile,pipe,tee,concat",
             if (headerBlock.isNotEmpty()) "-headers \"$headerBlock\r\n\"" else "",
             "-i \"$hlsUrl\"",
             "-map 0:s:0",
@@ -289,17 +268,18 @@ object HlsTrackManager {
             "\"${outSrt.absolutePath}\""
         ).filter { it.isNotEmpty() }.joinToString(" ")
 
-        android.util.Log.i(TAG, "===== SubtitleExtract (FFmpeg) =====")
+        android.util.Log.i(TAG, "===== SubtitleExtract (FFmpeg DISABLED) =====")
         android.util.Log.i(TAG, "Input: $hlsUrl")
         android.util.Log.i(TAG, "Out: ${outSrt.absolutePath}")
-        val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
-        val ok = outSrt.exists() && outSrt.length() > 0
+        // FFmpegKit removed for Play Store compliance
+        // val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
+        val ok = false // Disabled - FFmpeg functionality removed
         if (ok) {
             android.util.Log.i(TAG, "🎉 Altyazı bulundu ve çıkarıldı: ${outSrt.absolutePath}")
         } else {
-            android.util.Log.w(TAG, "❌ Altyazı tespit edilemedi/çıkarılamadı (FFmpeg)")
-            android.util.Log.d(TAG, ss.allLogsAsString.take(4000))
-            android.util.Log.w(TAG, "Fallback: Farklı variant/segment deneyin; gerekirse ccextractor ile 608->SRT dönüştürün")
+            android.util.Log.w(TAG, "❌ Altyazı çıkarma devre dışı (FFmpeg removed for Play Store)")
+            // android.util.Log.d(TAG, ss.allLogsAsString.take(4000))
+            android.util.Log.w(TAG, "Fallback: External subtitle tracks will be used instead")
         }
         return@withContext ok
     }
@@ -380,11 +360,12 @@ object HlsTrackManager {
             "-c:s srt",
             "\"${outSrt.absolutePath}\""
         ).joinToString(" ")
-        android.util.Log.i(TAG, "===== SubtitleExtract (FFmpeg LOCAL) =====")
-        val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
-        val ok = outSrt.exists() && outSrt.length() > 0
+        android.util.Log.i(TAG, "===== SubtitleExtract (FFmpeg LOCAL - DISABLED) =====")
+        // FFmpegKit removed for Play Store compliance
+        // val ss = com.arthenica.ffmpegkit.FFmpegKit.execute(cmd)
+        val ok = false // Disabled - FFmpeg functionality removed
         if (ok) android.util.Log.i(TAG, "🎉 Altyazı bulundu ve çıkarıldı (LOCAL): ${outSrt.absolutePath}")
-        else android.util.Log.w(TAG, "❌ Altyazı tespit edilemedi/çıkarılamadı (LOCAL)")
+        else android.util.Log.w(TAG, "❌ Altyazı çıkarma devre dışı (FFmpeg removed for Play Store)")
         return@withContext ok
     }
 
@@ -440,34 +421,17 @@ object HlsTrackManager {
         headers?.referer?.let { rb.header("Referer", it) }
         headers?.cookie?.let { rb.header("Cookie", it) }
         rb.header("Accept", "*/*")
-        try {
-            http.newCall(rb.build()).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url")
-                resp.body?.byteStream()?.use { input ->
-                    FileOutputStream(out).use { fos ->
-                        val buf = ByteArray(64 * 1024)
-                        var n: Int
-                        while (input.read(buf).also { n = it } > 0) {
-                            fos.write(buf, 0, n)
-                        }
+        http.newCall(rb.build()).execute().use { resp ->
+            if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url")
+            resp.body?.byteStream()?.use { input ->
+                FileOutputStream(out).use { fos ->
+                    val buf = ByteArray(64 * 1024)
+                    var n: Int
+                    while (input.read(buf).also { n = it } > 0) {
+                        fos.write(buf, 0, n)
                     }
-                } ?: throw IllegalStateException("Empty body for $url")
-            }
-        } catch (e: javax.net.ssl.SSLHandshakeException) {
-            android.util.Log.w("HlsSubtitle", "SSLHandshakeException on $url, retrying with UNSAFE client (test only)")
-            val u = unsafeClient()
-            u.newCall(rb.build()).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url (unsafe)")
-                resp.body?.byteStream()?.use { input ->
-                    FileOutputStream(out).use { fos ->
-                        val buf = ByteArray(64 * 1024)
-                        var n: Int
-                        while (input.read(buf).also { n = it } > 0) {
-                            fos.write(buf, 0, n)
-                        }
-                    }
-                } ?: throw IllegalStateException("Empty body for $url (unsafe)")
-            }
+                }
+            } ?: throw IllegalStateException("Empty body for $url")
         }
     }
 
@@ -477,18 +441,9 @@ object HlsTrackManager {
         headers?.referer?.let { rb.header("Referer", it) }
         headers?.cookie?.let { rb.header("Cookie", it) }
         rb.header("Accept", "application/x-mpegURL,application/vnd.apple.mpegurl,*/*")
-        try {
-            http.newCall(rb.build()).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url")
-                return@withContext resp.body?.string() ?: ""
-            }
-        } catch (e: javax.net.ssl.SSLHandshakeException) {
-            android.util.Log.w("HlsSubtitle", "SSLHandshakeException on $url, retrying with UNSAFE client (test only)")
-            val u = unsafeClient()
-            u.newCall(rb.build()).execute().use { resp ->
-                if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url (unsafe)")
-                return@withContext resp.body?.string() ?: ""
-            }
+        http.newCall(rb.build()).execute().use { resp ->
+            if (!resp.isSuccessful) throw IllegalStateException("HTTP ${resp.code} for $url")
+            return@withContext resp.body?.string() ?: ""
         }
     }
 
@@ -826,7 +781,7 @@ object HlsTrackManager {
         subtitlePath: String?,
         outputPath: String,
         headers: Headers? = null
-    ): String = withContext(Dispatchers.IO) {
+    ): Boolean = withContext(Dispatchers.IO) {
         val root = context.getExternalFilesDir(null) ?: context.filesDir
         val out = File(outputPath.ifBlank { File(root, "final.mp4").absolutePath })
         out.parentFile?.mkdirs()
@@ -839,16 +794,17 @@ object HlsTrackManager {
 
         val maps = mutableListOf<String>()
         maps.add("-map 0:v:0")
-        maps.add("-map 1:a:0")
+        maps.add("-map 1:a")  // İlk audio stream'i otomatik seç
         if (hasSub) maps.add("-map 2:0")
 
         val codecs = mutableListOf<String>()
         codecs.add("-c:v copy")
-        codecs.add("-c:a copy")
+        codecs.add("-c:a copy")  // Önce copy dene, sorun olursa aac'ye çevir
         if (hasSub) codecs.add("-c:s mov_text")
 
         val cmd = listOf(
             "-y",
+            "-protocol_whitelist file,crypto,tcp,https,tls,subfile,pipe,tee,concat",
             inputs.joinToString(" "),
             maps.joinToString(" "),
             codecs.joinToString(" "),
@@ -856,11 +812,63 @@ object HlsTrackManager {
             q(out.absolutePath)
         ).joinToString(" ")
 
-        val ss = FFmpegKit.execute(cmd)
-        if (!ReturnCode.isSuccess(ss.returnCode)) {
-            throw IllegalStateException("FFmpeg merge failed: ${ss.returnCode}\n${ss.allLogsAsString}")
+        android.util.Log.i("HLS_MERGE", "🔧 ===== FFmpeg Merge Command =====")
+        android.util.Log.i("HLS_MERGE", "📹 Video: $videoPath")
+        android.util.Log.i("HLS_MERGE", "📹 Video exists: ${File(videoPath).exists()}, size: ${File(videoPath).length()} bytes")
+        android.util.Log.i("HLS_MERGE", "🎵 Audio: $audioPath")
+        android.util.Log.i("HLS_MERGE", "🎵 Audio exists: ${File(audioPath).exists()}, size: ${File(audioPath).length()} bytes")
+        if (hasSub) {
+            android.util.Log.i("HLS_MERGE", "📝 Subtitle: $subtitlePath")
+            android.util.Log.i("HLS_MERGE", "📝 Subtitle exists: ${File(subtitlePath!!).exists()}, size: ${File(subtitlePath).length()} bytes")
         }
-        return@withContext out.absolutePath
+        android.util.Log.i("HLS_MERGE", "⚡ FFmpeg Command: $cmd")
+
+        // FFmpegKit removed for Play Store compliance
+        // val ss = FFmpegKit.execute(cmd)
+        android.util.Log.i("HLS_MERGE", "🔧 FFmpeg execution DISABLED (removed for Play Store)")
+        // android.util.Log.i("HLS_MERGE", "🔧 Return code: ${ss.returnCode}")
+        
+        val mergeSuccess = false // Disabled - FFmpeg functionality removed
+        if (!mergeSuccess) {
+            android.util.Log.w("HLS_MERGE", "⚠️ FFmpeg merge disabled (removed for Play Store compliance)")
+            // android.util.Log.w("HLS_MERGE", "⚠️ Error logs: ${ss.allLogsAsString}")
+            
+            // Fallback: Audio'yu AAC'ye çevir
+            val codecsAac = mutableListOf<String>()
+            codecsAac.add("-c:v copy")
+            codecsAac.add("-c:a aac")  // AAC'ye çevir
+            if (hasSub) codecsAac.add("-c:s mov_text")
+            
+            val cmdAac = listOf(
+                "-y",
+                "-protocol_whitelist file,crypto,tcp,https,tls,subfile,pipe,tee,concat",
+                inputs.joinToString(" "),
+                maps.joinToString(" "),
+                codecsAac.joinToString(" "),
+                "-movflags +faststart",
+                q(out.absolutePath)
+            ).joinToString(" ")
+            
+            android.util.Log.i("HLS_MERGE", "🔄 Fallback FFmpeg Command DISABLED: $cmdAac")
+            // FFmpegKit removed for Play Store compliance
+            // val ss2 = FFmpegKit.execute(cmdAac)
+            android.util.Log.i("HLS_MERGE", "🔧 Fallback execution DISABLED (FFmpeg removed)")
+            // android.util.Log.i("HLS_MERGE", "🔧 Fallback return code: ${ss2.returnCode}")
+            
+            // if (!ReturnCode.isSuccess(ss2.returnCode)) {
+            //     android.util.Log.e("HLS_MERGE", "❌ FFmpeg merge failed even with AAC!")
+            //     android.util.Log.e("HLS_MERGE", "❌ Fallback error logs: ${ss2.allLogsAsString}")
+            //     throw IllegalStateException("FFmpeg merge failed: ${ss2.returnCode}\n${ss2.allLogsAsString}")
+            // }
+            
+            // Return false since FFmpeg is disabled
+            return@withContext false
+        }
+        
+        // Çıktı dosyasının durumunu kontrol et - FFmpeg disabled
+        android.util.Log.e("HLS_MERGE", "❌ Merge functionality disabled (FFmpeg removed for Play Store)")
+        
+        return@withContext false // FFmpeg disabled - merge not available
     }
 
     suspend fun downloadAllAndMerge(
@@ -908,8 +916,8 @@ object HlsTrackManager {
             runCatching { exportToPublicDownloads(context, File(videoPath), File(videoPath).name, "video/mp4") }
             runCatching { exportToPublicDownloads(context, File(audioPath), File(audioPath).name, "audio/aac") }
             if (subtitlePath != null) runCatching { exportToPublicDownloads(context, File(subtitlePath), File(subtitlePath).name, "text/vtt") }
-            runCatching { exportToPublicDownloads(context, File(merged), File(merged).name, "video/mp4") }
-            callback.onAllCompleted(videoPath, audioPath, subtitlePath, merged)
+            // Merge disabled - FFmpeg removed for Play Store compliance
+            callback.onAllCompleted(videoPath, audioPath, subtitlePath, if (merged) "merged" else "merge_failed")
         } catch (t: Throwable) {
             callback.onError(t.message ?: "Unknown error", t)
         }

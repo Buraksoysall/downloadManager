@@ -14,8 +14,11 @@
 
     <application
         android:allowBackup="true"
-        android:label="Video Downloader"
-        android:supportsRtl="true">
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.VideoDownloader"
+        android:requestLegacyExternalStorage="true">
 
         <activity
             android:name=".MainActivity"
